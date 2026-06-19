@@ -1,0 +1,12 @@
+{
+  "projectName": "my-project",
+  "description": "Brief project description",
+  "framework": "next",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "srcDir": "src",
+  "deployTarget": "vercel",
+  "cssApproach": "tailwind",
+  "hasNodeBackend": false,
+  "monorepo": false
+}
