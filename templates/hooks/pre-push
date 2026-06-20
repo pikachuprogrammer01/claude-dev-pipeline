@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# pre-push: TypeScript type check + branch document validation
+# Installed to .git/hooks/pre-push by git-init skill
+# Blocks push if type errors exist or required branch documents are missing
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+FAILED=0
+
+echo ""
+echo "  ┌─ Pre-push checks (${CURRENT_BRANCH}) ─────────────────────────────────────"
+
+# ── TypeScript type check ──────────────────────────────────────────────────
+if [ -f "tsconfig.json" ]; then
+  printf "  │  TypeScript ......... "
+
+  # Use pnpm if available, fall back to npx
+  if command -v pnpm >/dev/null 2>&1 && grep -q '"typecheck"' package.json 2>/dev/null; then
+    TS_OUTPUT=$(pnpm typecheck 2>&1)
+    TS_EXIT=$?
+  else
+    TS_OUTPUT=$(npx tsc --noEmit 2>&1)
+    TS_EXIT=$?
+  fi
+
+  if [ $TS_EXIT -eq 0 ]; then
+    echo "OK"
+  else
+    echo "FAILED"
+    # Show first 10 error lines for context
+    echo "$TS_OUTPUT" | grep "error TS" | head -10 | while read -r line; do
+      echo "  │    ${line}"
+    done
+    FAILED=1
+  fi
+else
+  echo "  │  TypeScript ......... skipped (no tsconfig.json)"
+fi
+
+# ── Branch document validation ────────────────────────────────────────────
+printf "  │  Branch documents ... "
+
+# Define required documents per branch using case statement (bash 3 compatible)
+case "$CURRENT_BRANCH" in
+  main)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md DEPLOYMENT.md README.md"
+    ;;
+  dev)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md ARCHITECTURE.md README.md"
+    ;;
+  fix)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md BUGLOG.md README.md"
+    ;;
+  refactor)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md README.md"
+    ;;
+  version)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md CHANGELOG.md README.md"
+    ;;
+  test)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md TEST-PLAN.md README.md"
+    ;;
+  docs)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md README.md"
+    ;;
+  perf)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md BENCHMARK.md README.md"
+    ;;
+  security)
+    REQUIRED_DOCS="CLAUDE.md CLAUDE-detailed.md SPEC.md SECURITY.md README.md"
+    ;;
+  *)
+    # Feature branches and unknown branches: require only CLAUDE.md
+    REQUIRED_DOCS="CLAUDE.md"
+    ;;
+esac
+
+MISSING_DOCS=""
+for doc in $REQUIRED_DOCS; do
+  if [ ! -f "$doc" ]; then
+    MISSING_DOCS="${MISSING_DOCS} ${doc}"
+  fi
+done
+
+if [ -z "$MISSING_DOCS" ]; then
+  echo "OK"
+else
+  echo "MISSING"
+  for doc in $MISSING_DOCS; do
+    echo "  │    missing: ${doc}"
+  done
+  FAILED=1
+fi
+
+# ── ESLint (optional — only if script exists) ─────────────────────────────
+if command -v pnpm >/dev/null 2>&1 && grep -q '"lint"' package.json 2>/dev/null; then
+  printf "  │  ESLint ............. "
+  if pnpm lint --quiet 2>/dev/null; then
+    echo "OK"
+  else
+    echo "FAILED (run pnpm lint to see details)"
+    FAILED=1
+  fi
+fi
+
+# ── Result ────────────────────────────────────────────────────────────────
+echo "  └────────────────────────────────────────────────────────────────────"
+
+if [ $FAILED -ne 0 ]; then
+  echo ""
+  echo "  Push blocked. Fix the issues above and try again."
+  echo "  To skip checks in an emergency: git push --no-verify"
+  echo ""
+  exit 1
+fi
+
+echo ""
+exit 0

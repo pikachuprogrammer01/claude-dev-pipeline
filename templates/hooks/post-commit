@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# post-commit: reminds about documentation updates based on what changed
+# Installed to .git/hooks/post-commit by git-init skill
+
+# Get list of changed files in the commit just made
+if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+  CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null)
+else
+  # First commit — get all files added
+  CHANGED=$(git show --name-only --format="" HEAD 2>/dev/null)
+fi
+
+[ -z "$CHANGED" ] && exit 0
+
+COMMIT_MSG=$(git log -1 --format="%s")
+COMMIT_TYPE=$(echo "$COMMIT_MSG" | grep -oE "^(feat|fix|refactor|test|docs|chore|perf|ci|build)" || true)
+
+REMINDERS=()
+
+# ── Rule: src/ structural change → ARCHITECTURE.md ──────────────────────────
+# Triggers when a new top-level directory appears under src/
+NEW_DIRS=$(echo "$CHANGED" | grep -E "^src/[^/]+/" | awk -F'/' '{print $2}' | sort -u)
+if [ -n "$NEW_DIRS" ]; then
+  REMINDERS+=("Directory structure may have changed: verify ARCHITECTURE.md is current")
+fi
+
+# ── Rule: API / route files → API documentation ─────────────────────────────
+if echo "$CHANGED" | grep -qiE "(api|route|endpoint|handler)"; then
+  REMINDERS+=("API or route files changed: consider updating API documentation or TSDoc")
+fi
+
+# ── Rule: package.json → SPEC.md dependencies section ───────────────────────
+if echo "$CHANGED" | grep -q "^package\.json$"; then
+  REMINDERS+=("package.json changed: review the tech stack section in SPEC.md")
+fi
+
+# ── Rule: tsconfig / eslint config → SPEC.md / ARCHITECTURE.md ──────────────
+if echo "$CHANGED" | grep -qE "^(tsconfig|\.eslintrc|eslint\.config)"; then
+  REMINDERS+=("TypeScript or ESLint config changed: update SPEC.md or ARCHITECTURE.md if this reflects a new convention")
+fi
+
+# ── Rule: feat commit → README.md ────────────────────────────────────────────
+if [ "$COMMIT_TYPE" = "feat" ]; then
+  REMINDERS+=("New feature committed: update README.md if this is user-facing")
+fi
+
+# ── Rule: fix commit → BUGLOG.md ─────────────────────────────────────────────
+if [ "$COMMIT_TYPE" = "fix" ]; then
+  REMINDERS+=("Bug fix committed: add entry to BUGLOG.md on the fix branch if not done")
+fi
+
+# ── Rule: perf commit → BENCHMARK.md ─────────────────────────────────────────
+if [ "$COMMIT_TYPE" = "perf" ]; then
+  REMINDERS+=("Performance change: record before/after measurements in BENCHMARK.md")
+fi
+
+# ── Rule: docs commit → sync if README changed ────────────────────────────────
+if [ "$COMMIT_TYPE" = "docs" ] && echo "$CHANGED" | grep -q "^README\.md$"; then
+  CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+  if [ "$CURRENT_BRANCH" = "main" ]; then
+    REMINDERS+=("README.md updated on main: sync to other branches when ready (see git-init skill Step 7)")
+  fi
+fi
+
+# ── Print reminders ───────────────────────────────────────────────────────────
+if [ ${#REMINDERS[@]} -gt 0 ]; then
+  echo ""
+  echo "  ┌─ Documentation reminders ──────────────────────────────────────────"
+  for reminder in "${REMINDERS[@]}"; do
+    echo "  │  · ${reminder}"
+  done
+  echo "  └────────────────────────────────────────────────────────────────────"
+  echo ""
+fi
+
+exit 0

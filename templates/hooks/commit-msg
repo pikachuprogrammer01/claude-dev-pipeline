@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# commit-msg: validates Conventional Commits format
+# Installed to .git/hooks/commit-msg by git-init skill
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(head -1 "$COMMIT_MSG_FILE")
+
+# Skip merge commits, revert commits, and fixup commits
+if echo "$COMMIT_MSG" | grep -qE "^(Merge|Revert|fixup!|squash!)"; then
+  exit 0
+fi
+
+# Conventional Commits pattern
+# type(optional-scope): description
+# type must be one of the allowed values
+# description must be present and non-empty
+PATTERN="^(feat|fix|refactor|test|docs|chore|perf|ci|build)(\([a-zA-Z0-9/_-]+\))?: .{1,100}$"
+
+if ! echo "$COMMIT_MSG" | grep -qE "$PATTERN"; then
+  echo ""
+  echo "  ✗  Commit rejected: message does not follow Conventional Commits."
+  echo ""
+  echo "     Format:  type(scope): description"
+  echo "     Scope is optional. Description must be ≤ 100 characters."
+  echo ""
+  echo "     Allowed types:"
+  echo "       feat     — new feature"
+  echo "       fix      — bug fix"
+  echo "       refactor — code change that is not a feature or bug fix"
+  echo "       test     — adding or updating tests"
+  echo "       docs     — documentation only"
+  echo "       chore    — build process, tooling, dependencies"
+  echo "       perf     — performance improvement"
+  echo "       ci       — CI/CD configuration"
+  echo "       build    — build system changes"
+  echo ""
+  echo "     Examples:"
+  echo "       feat(auth): add OAuth2 login with Google"
+  echo "       fix(cart): prevent duplicate items on rapid click"
+  echo "       refactor(hooks): extract useUser from ProfilePage"
+  echo "       docs(README): update local development setup"
+  echo ""
+  echo "     Your message: \"${COMMIT_MSG}\""
+  echo ""
+  exit 1
+fi
+
+exit 0
