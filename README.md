@@ -22,13 +22,15 @@ Running `@git-init` in Claude Code on a new project:
 
 ## Requirements
 
-- macOS or Linux
+- macOS, Linux, or Windows
 - `git` installed
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
-
+- `Claude Code` installed
+- `PowerShell 5.1+` (Windows only)
 ---
 
 ## Installation
+
+### macOS / Linux
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/pikachuprogrammer01/claude-dev-pipeline/main/install.sh | bash
@@ -40,6 +42,19 @@ Or from a local clone:
 git clone https://github.com/pikachuprogrammer01/claude-dev-pipeline
 cd claude-dev-pipeline
 ./install.sh
+```
+
+### Windows
+```bash
+irm https://raw.githubusercontent.com/pikachuprogrammer01/claude-dev-pipeline/main/install-Windows.ps1 | iex
+```
+
+Or from a local clone:
+
+```bash
+git clone https://github.com/pikachuprogrammer01/claude-dev-pipeline
+cd claude-dev-pipeline
+.\install-Windows.ps1
 ```
 
 This installs the pipeline to `~/.claude-pipeline/` and registers the
@@ -172,6 +187,7 @@ and `templates/claude-detailed/`.
 
 ## Updating
 
+### macOS / Linux
 ```bash
 ~/.claude-pipeline/update.sh
 ```
@@ -185,16 +201,28 @@ To refresh skills in an existing project:
 @git-init --refresh
 ```
 
+### Windows
+```bash
+~\.claude-pipeline\update-Windows.ps1
+```
+
 ---
 
 ## Uninstalling
 
+### macOS / Linux
 ```bash
 ~/.claude-pipeline/uninstall.sh
 ```
 
 Removes `~/.claude-pipeline/`, the global `git-init` skill, and the path
 marker. Existing project `.claude/` directories are not affected.
+
+### Windows
+
+```bash
+~\.claude-pipeline\uninstall-Windows.ps1
+```
 
 ---
 
@@ -203,8 +231,11 @@ marker. Existing project `.claude/` directories are not affected.
 ```
 claude-dev-pipeline/
 ├── install.sh
+├── install-Windows.ps1
 ├── update.sh
+├── update-Windows.ps1
 ├── uninstall.sh
+├── uninstall-Windows.ps1
 ├── README.md
 ├── config/
 │   └── project.config.template.json
@@ -231,4 +262,24 @@ claude-dev-pipeline/
 
 ## License
 
-MIT
+MIT License
+
+Copyright (c) 2026 PikachuProgrammer01
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
