@@ -31,13 +31,13 @@ Running `@git-init` in Claude Code on a new project:
 ## Installation
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/claude-dev-pipeline/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/pikachuprogrammer01/claude-dev-pipeline/main/install.sh | bash
 ```
 
 Or from a local clone:
 
 ```bash
-git clone https://github.com/YOUR_GITHUB_USERNAME/claude-dev-pipeline
+git clone https://github.com/pikachuprogrammer01/claude-dev-pipeline
 cd claude-dev-pipeline
 ./install.sh
 ```
