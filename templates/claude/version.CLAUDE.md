@@ -70,7 +70,7 @@ Keep entries concise and written for the reader, not the developer.
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full release methodology and versioning process |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `CHANGELOG.md` | Version history |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |

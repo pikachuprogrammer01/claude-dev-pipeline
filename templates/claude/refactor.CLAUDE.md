@@ -60,7 +60,7 @@ refactor: eliminate duplication in validation logic
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full refactoring patterns and methodology |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |
 

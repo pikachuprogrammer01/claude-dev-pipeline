@@ -269,7 +269,9 @@ chmod +x .git/hooks/commit-msg .git/hooks/post-commit .git/hooks/pre-push
 
 ---
 
-## Step 7 — README Generation
+## Step 7 — README and SPEC Generation
+
+### Step 7a — README
 
 Tell the user:
 > "Repository structure is ready. To generate the project README, please
@@ -298,7 +300,40 @@ done
 git checkout main
 ```
 
----
+### Step 7b — SPEC
+
+Tell the user:
+> "Now let's populate SPEC.md. Please answer the following:
+> 1. What problem does this project solve? (1–2 sentences)
+> 2. Who are the primary users?
+> 3. Core features — list 3–8 items
+> 4. What is explicitly out of scope?
+> 5. Any specific non-functional requirements? (performance targets,
+>    browser support, accessibility, etc.)
+>
+> I will fill in SPEC.md and sync it to all branches. It will be
+> maintained on `main` — never edit it directly on other branches."
+
+Using the user's answers, fill in SPEC.md on `main`:
+- Replace the Overview section with the project description and primary users
+- Replace the Core Features list with the user's feature list
+- Replace the Out of Scope section with the user's answer
+- Fill in any stated non-functional requirements
+- Leave the Decisions and Open Questions sections empty for now
+
+Commit and sync to all branches:
+```bash
+git add SPEC.md
+git commit -m "docs: populate SPEC with project details"
+
+for branch in dev fix refactor version test docs perf security; do
+  git checkout "$branch"
+  git checkout main -- SPEC.md
+  git add SPEC.md && git commit -m "docs: sync SPEC from main"
+done
+
+git checkout main
+```
 
 ## Step 8 — Completion Report
 

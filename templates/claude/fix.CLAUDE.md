@@ -51,7 +51,7 @@ For investigation strategy, consult `.claude/skills/debug/SKILL.md`.
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full debug methodology and investigation process |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `BUGLOG.md` | Bug history and fix records |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |

@@ -40,7 +40,7 @@
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full deployment and review methodology |
-| `SPEC.md` | Project requirements and architecture decisions |
+| `SPEC.md` | Project requirements and architecture decisions — authoritative copy lives here; sync to other branches after any update (see docs skill) |
 | `README.md` | Project documentation |
 | `DEPLOYMENT.md` | Pre-deploy checklist and environment config |
 | `.claude/skills/` | All project skills |

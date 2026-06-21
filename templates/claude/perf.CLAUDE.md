@@ -66,7 +66,7 @@ consult `.claude/skills/performance/SKILL.md`.
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full performance methodology and measurement process |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `BENCHMARK.md` | Performance baselines and optimization results |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |

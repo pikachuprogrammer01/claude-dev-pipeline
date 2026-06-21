@@ -70,7 +70,7 @@ in test files. Test utilities and mocks must be properly typed.
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full testing methodology, patterns, mock strategy |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `TEST-PLAN.md` | Test strategy, coverage map, gap analysis |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |

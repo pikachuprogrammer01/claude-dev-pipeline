@@ -62,7 +62,7 @@ Requirement in SPEC.md
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full dev workflow, coding standards, patterns |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `ARCHITECTURE.md` | Directory structure, data flow, conventions |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |

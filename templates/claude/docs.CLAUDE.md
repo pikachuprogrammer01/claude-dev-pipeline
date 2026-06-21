@@ -64,7 +64,7 @@ What becomes harder or more constrained?
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full documentation methodology and standards |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `README.md` | Project documentation |
 | `docs/decisions/` | Architecture Decision Records |
 | `.claude/skills/` | All project skills |

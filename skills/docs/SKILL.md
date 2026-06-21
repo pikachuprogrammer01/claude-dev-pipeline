@@ -63,23 +63,28 @@ Do not regenerate after every small change.
 
 ---
 
-## README Sync to All Branches
+## SPEC Sync to All Branches
 
-After updating README.md on main:
+SPEC.md has a single authoritative copy on `main`. Other branches treat it
+as read-only. After any update to SPEC.md on `main`:
 
 ```bash
-git add README.md && git commit -m "docs: update project README"
+git add SPEC.md && git commit -m "docs: update SPEC"
 
 for branch in dev fix refactor version test docs perf security; do
   git checkout "$branch"
-  git checkout main -- README.md
-  git add README.md && git commit -m "docs: sync README from main"
+  git checkout main -- SPEC.md
+  git add SPEC.md && git commit -m "docs: sync SPEC from main"
 done
 
 git checkout main
 ```
 
----
+When to sync:
+- After adding or removing a requirement
+- After an architectural decision changes the stack or structure
+- After the Out of Scope section changes
+- Before a minor or major release
 
 ## ADR Process
 

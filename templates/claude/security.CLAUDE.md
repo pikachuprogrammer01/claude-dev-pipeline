@@ -71,7 +71,7 @@ For the full audit methodology, consult `.claude/skills/security-audit/SKILL.md`
 |---|---|
 | `CLAUDE.md` | This file — quick reference |
 | `CLAUDE-detailed.md` | Full security audit methodology |
-| `SPEC.md` | Project requirements |
+| `SPEC.md` | Project requirements — maintained on `main`, read-only on this branch |
 | `SECURITY.md` | Vulnerability findings and remediation status |
 | `README.md` | Project documentation |
 | `.claude/skills/` | All project skills |
